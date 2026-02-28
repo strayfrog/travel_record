@@ -392,19 +392,18 @@
         const MapSection = () => (
             <section className="py-12 bg-white">
                 <div className="container mx-auto px-4 md:px-6">
-                    <div className="flex items-center gap-3 mb-8 justify-center lg:justify-start max-w-5xl mx-auto">
+                    <div className="flex items-center gap-3 mb-8 justify-center lg:justify-start max-w-7xl mx-auto">
                         <div className="p-2 bg-red-100 rounded-lg text-red-600">
                             <MapIcon className="w-6 h-6" />
                         </div>
                         <h2 className="text-2xl font-bold text-slate-800">足跡地圖</h2>
                     </div>
-                    <div className="w-full max-w-5xl mx-auto aspect-[16/9] md:aspect-[21/9] bg-slate-100 rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+                    <div className="w-full max-w-7xl mx-auto aspect-[16/9] md:aspect-[21/9] bg-slate-100 rounded-2xl overflow-hidden shadow-lg border border-slate-200">
                         <iframe src={mapConfig.embedSrc} width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" title="My Travel Map"></iframe>
                     </div>
                 </div>
             </section>
         );
-
         const AlbumCard = ({ album, onOpenSchedule }) => {
             return (
                 <div className="group flex flex-col bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:border-red-200 transition-all duration-300 transform hover:-translate-y-1 h-full">
@@ -555,5 +554,6 @@
 </body>
 
 </html>
+
 
 
