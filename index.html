@@ -392,13 +392,13 @@
         const MapSection = () => (
             <section className="py-12 bg-white">
                 <div className="container mx-auto px-4 md:px-6">
-                    <div className="flex items-center gap-3 mb-8">
+                    <div className="flex items-center gap-3 mb-8 justify-center lg:justify-start max-w-5xl mx-auto">
                         <div className="p-2 bg-red-100 rounded-lg text-red-600">
                             <MapIcon className="w-6 h-6" />
                         </div>
                         <h2 className="text-2xl font-bold text-slate-800">足跡地圖</h2>
                     </div>
-                    <div className="w-full aspect-[16/9] md:aspect-[21/9] bg-slate-100 rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+                    <div className="w-full max-w-5xl mx-auto aspect-[16/9] md:aspect-[21/9] bg-slate-100 rounded-2xl overflow-hidden shadow-lg border border-slate-200">
                         <iframe src={mapConfig.embedSrc} width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" title="My Travel Map"></iframe>
                     </div>
                 </div>
@@ -458,11 +458,35 @@
         };
 
         const AlbumGrid = () => {
-            const [showAll, setShowAll] = useState(false);
+            // 將顯示數量改為數值 state，預設初始顯示 20 筆
+            const [displayCount, setDisplayCount] = useState(20);
             const [selectedSchedule, setSelectedSchedule] = useState(null);
             const [modalOpen, setModalOpen] = useState(false);
             
-            const displayedAlbums = showAll ? albumsData : albumsData.slice(0, 8);
+            // 使用 React.useEffect 監聽視窗滾動事件
+            React.useEffect(() => {
+                const handleScroll = () => {
+                    // 計算是否滾動到接近頁面底部 (距離底部 300px 內觸發)
+                    const scrollPosition = window.innerHeight + document.documentElement.scrollTop;
+                    const threshold = document.documentElement.offsetHeight - 300;
+
+                    if (scrollPosition >= threshold) {
+                        setDisplayCount(prev => {
+                            // 若還有未顯示的資料，每次增加載入 8 筆
+                            if (prev < albumsData.length) {
+                                return Math.min(prev + 8, albumsData.length);
+                            }
+                            return prev;
+                        });
+                    }
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                // 組件卸載時清除監聽器，避免記憶體洩漏
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const displayedAlbums = albumsData.slice(0, displayCount);
 
             const handleOpenSchedule = (album) => {
                 setSelectedSchedule(album);
@@ -488,17 +512,17 @@
                                 <AlbumCard key={album.id} album={album} onOpenSchedule={handleOpenSchedule} />
                             ))}
                         </div>
-                        {albumsData.length > 8 && (
-                            <div className="mt-12 text-center">
-                                <button onClick={() => setShowAll(!showAll)} className="inline-flex items-center gap-2 px-8 py-3 bg-white border border-slate-300 text-slate-700 font-medium rounded-full hover:bg-slate-50 hover:border-slate-400 transition-colors shadow-sm">
-                                    {showAll ? (
-                                        <>收起部分相簿 <ChevronUpIcon className="w-4 h-4" /></>
-                                    ) : (
-                                        <>載入更多 ({albumsData.length - 8}) <ChevronDownIcon className="w-4 h-4" /></>
-                                    )}
-                                </button>
+                        
+                        {/* 替換為載入中的視覺提示，當所有資料載入完畢後自動隱藏 */}
+                        {displayCount < albumsData.length && (
+                            <div className="mt-12 text-center flex justify-center items-center gap-2 text-slate-400">
+                                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                                <span className="text-sm font-medium ml-2">載入更多相簿中...</span>
                             </div>
                         )}
+                        
                         <ItineraryModal schedule={selectedSchedule?.schedule} title={selectedSchedule?.title} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
                     </div>
                 </section>
@@ -531,4 +555,5 @@
 </body>
 
 </html>
+
 
