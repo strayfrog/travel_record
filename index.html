@@ -490,15 +490,37 @@
 
         const MapSection = () => (
             <section className="py-12 bg-white">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="flex items-center gap-3 mb-8 justify-center lg:justify-start max-w-7xl mx-auto">
+                <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+                    <div className="flex items-center gap-3 mb-8 justify-center lg:justify-start">
                         <div className="p-2 bg-red-100 rounded-lg text-red-600">
-                            <MapIcon className="w-6 h-6" />
+                            <MapIcon className="w-6 h-6"/>
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-800">足跡地圖</h2>
+                        <div>
+                            <h2 className="text-2xl font-bold text-slate-800">踏破足跡與制縣等級</h2>
+                            <p className="text-slate-500 text-sm mt-0.5">全日本 47 都道府縣踩點記錄</p>
+                        </div>
                     </div>
-                    <div className="w-full max-w-7xl mx-auto aspect-[16/9] md:aspect-[21/9] bg-slate-100 rounded-2xl overflow-hidden shadow-lg border border-slate-200">
-                        <iframe src={mapConfig.embedSrc} width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" title="My Travel Map"></iframe>
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                        <div className="lg:col-span-5 bg-slate-50 rounded-2xl p-4 border border-slate-200 shadow-md flex flex-col justify-center items-center">
+                            <img 
+                                src="japanex.png" 
+                                alt="日本制縣等級 178" 
+                                className="w-full h-auto max-h-[500px] object-contain rounded-xl"
+                            />
+                        </div>
+
+                        <div className="lg:col-span-7 bg-slate-100 rounded-2xl overflow-hidden shadow-md border border-slate-200 min-h-[400px]">
+                            <iframe 
+                                src={mapConfig.embedSrc} 
+                                width="100%" 
+                                height="100%" 
+                                style={{ border: 0, minHeight: "400px" }} 
+                                allowFullScreen 
+                                loading="lazy" 
+                                title="My Travel Map"
+                            ></iframe>
+                        </div>
                     </div>
                 </div>
             </section>
